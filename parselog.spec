@@ -5,6 +5,7 @@
 #
 %include	/usr/lib/rpm/macros.perl
 Summary:	Parselog - A Log File Analysis Tool
+Summary(pl):	Parselog - narzêdzie do analizy plików logów
 Name:		parselog
 Version:	0.08
 Release:	0.17
@@ -35,7 +36,7 @@ Parselog can produce statistics for the following applications
 
 Reasons to use parselog instead of other log tools:
 - Simplicity - Install one tool too cover multiple applications
-- Centralisation - display results from multiple machine together
+- Centralisation - display results from multiple machines together
 
 Reasons for not using parselog of other log tools:
 - Speed - parselog is written in Perl. Your 'C'-based tool will be
@@ -46,8 +47,30 @@ Reasons for not using parselog of other log tools:
 This package contains a set of Perl modules and a Perl script that
 will parse various log files and create Round Robin Databases (RRDs).
 
+%description -l pl
+Parselog mo¿e tworzyæ statystyki dla nastêpuj±cych aplikacji:
+- AMaViS (i pochodne)
+- Exim
+- Postfix
+- Apache
+- MyDNS (wkrótce)
+
+Powody, aby u¿ywaæ parseloga zamiast innych narzêdzi do logów:
+- prostota - jedno narzêdzie dla wielu aplikacji,
+- centralizacja - wy¶wietlanie razem wyników z wielu maszyn.
+
+Powody, aby nie u¿ywaæ parseloga zamiast innych narzêdzi:
+- szybko¶æ - parselog jest napisany w Perlu; narzêdzie w C bêdzie
+  szybsze,
+- kompletno¶æ - parselog mo¿e nie liczyæ w ten sam sposób, co inne
+  narzêdzie.
+
+Ten pakiet zawiera zestaw modu³ów Perla i skrypt perlowy
+przetwarzaj±cy ró¿ne pliki logów i tworz±cy bazy danych RRD.
+
 %package cgi
-Summary:	cgi
+Summary:	CGI script to generate graphs
+Summary(pl):	Skrypt CGI generuj±cy wykresy
 Group:		Applications/WWW
 Requires:	%{name} = %{version}-%{release}
 Version:	%{cgi_version}
@@ -55,6 +78,10 @@ Version:	%{cgi_version}
 %description cgi
 This package contains a Perl CGI script to generate on-the-fly graphs
 to be viewed with a web browser.
+
+%description cgi -l pl
+Ten pakiet zawiera skrypt perlowy CGI generuj±cy w locie wykresy
+przeznaczone do ogl±dania przegl±dark± WWW.
 
 %prep
 %setup -q -a 1
