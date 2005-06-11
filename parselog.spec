@@ -4,7 +4,7 @@
 %bcond_without	tests		# do not perform "make test"
 #
 %include	/usr/lib/rpm/macros.perl
-Summary:	Parselog - A Log File Analysis Tool
+Summary:	Parselog - a log file analysis tool
 Summary(pl):	Parselog - narzêdzie do analizy plików logów
 Name:		parselog
 Version:	0.08
@@ -35,14 +35,14 @@ Parselog can produce statistics for the following applications
 - MyDNS (coming soon)
 
 Reasons to use parselog instead of other log tools:
-- Simplicity - Install one tool too cover multiple applications
-- Centralisation - display results from multiple machines together
+- Simplicity - Install one tool too cover multiple applications,
+- Centralisation - display results from multiple machines together.
 
 Reasons for not using parselog of other log tools:
 - Speed - parselog is written in Perl. Your 'C'-based tool will be
-  faster
+  faster,
 - Completeness - maybe parselog doesn't measure the same way other
-  tools do
+  tools do.
 
 This package contains a set of Perl modules and a Perl script that
 will parse various log files and create Round Robin Databases (RRDs).
