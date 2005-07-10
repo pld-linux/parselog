@@ -8,7 +8,7 @@ Summary:	Parselog - a log file analysis tool
 Summary(pl):	Parselog - narzêdzie do analizy plików logów
 Name:		parselog
 Version:	0.08
-Release:	0.17
+Release:	0.18
 Epoch:		0
 License:	GPL v2
 Group:		Applications/System
@@ -91,12 +91,16 @@ mv parselog-cgi-%{cgi_version} cgi
 
 %build
 %{__perl} Makefile.PL \
-	INSTALLDIRS=vendor \
+	INSTALLDIRS=vendor
+%{__make} \
+	OPTIMIZE="%{rpmcflags}"
 %{?with_tests:%{__make} test}
 
 cd cgi
 %{__perl} Makefile.PL \
 	INSTALLDIRS=vendor
+%{__make} \
+	OPTIMIZE="%{rpmcflags}"
 %{?with_tests:%{__make} test}
 
 %install
@@ -122,16 +126,16 @@ cp -p conf/apache.conf $RPM_BUILD_ROOT%{_sysconfdir}/parselog/apache.conf
 rm -rf $RPM_BUILD_ROOT
 
 %triggerin cgi -- apache1 >= 1.3.33-2
-%apache_config_install -v 1 -c %{_sysconfdir}/parselog/apache.conf
+%apache_config_install -v 1 -c %{_sysconfdir}/parselog/apache.conf -n 09
 
 %triggerun cgi -- apache1 >= 1.3.33-2
-%apache_config_uninstall -v 1
+%apache_config_uninstall -v 1 -n 09
 
 %triggerin cgi -- apache >= 2.0.0
-%apache_config_install -v 2 -c %{_sysconfdir}/parselog/apache.conf
+%apache_config_install -v 2 -c %{_sysconfdir}/parselog/apache.conf -n 09
 
 %triggerun cgi -- apache >= 2.0.0
-%apache_config_uninstall -v 2
+%apache_config_uninstall -v 2 -n 09
 
 %files
 %defattr(644,root,root,755)
