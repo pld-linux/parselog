@@ -1,25 +1,24 @@
-%define		cgi_version 0.03
+%define		cgi_version 0.04
 
 # Conditional build:
-%bcond_without	tests		# do not perform "make test"
+%bcond_with	tests		# do not perform "make test"
 #
 %include	/usr/lib/rpm/macros.perl
 Summary:	Parselog - a log file analysis tool
 Summary(pl):	Parselog - narzêdzie do analizy plików logów
 Name:		parselog
-Version:	0.08
-Release:	0.18
+Version:	0.09
+Release:	0.1
 Epoch:		0
 License:	GPL v2
 Group:		Applications/System
 Source0:	http://rekudos.net/repo/parselog/%{name}.tgz
-# Source0-md5:	97170331bf3a62f0874a6e520cf3025a
+# Source0-md5:	bac806ec9981c9d363e709b42d9b129e
 Source1:	http://rekudos.net/repo/parselog-cgi/%{name}-cgi.tgz
-# Source1-md5:	f2fbbbf5bb895afad703d6b9e6d30401
+# Source1-md5:	2942f30dd190dac31d7970ed04e0ffe5
 URL:		http://rekudos.net/parselog/
 BuildRequires:	perl-DateTime
 BuildRequires:	perl-LockFile-Simple
-BuildRequires:	perl-XML-API
 BuildRequires:	perl-devel >= 1:5.8.0
 BuildRequires:	rpm-perlprov >= 4.1-13
 BuildRequires:	rpmbuild(macros) >= 1.221
@@ -139,7 +138,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc Changes README TODO
+%doc Changes README
 %dir %{_sysconfdir}/parselog
 %dir %{_sysconfdir}/parselog/conf.d
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/parselog/parselog.conf
@@ -157,9 +156,6 @@ rm -rf $RPM_BUILD_ROOT
 %{perl_vendorlib}/Log/Read/Apache.pm
 %{perl_vendorlib}/Log/Read/Exim.pm
 %{perl_vendorlib}/Log/Read/Syslog.pm
-
-%dir %{perl_vendorlib}/rek
-%{perl_vendorlib}/rek/Log.pm
 
 %dir /var/lib/parselog
 
