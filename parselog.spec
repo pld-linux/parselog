@@ -17,9 +17,9 @@ Version:	%{main_version}
 Release:	0.11
 License:	GPL v2
 Group:		Applications/System
-Source0:	http://rekudos.net/repo/parselog/%{name}.tgz
+Source0:	http://rekudos.net/repo/parselog/%{name}-%{main_version}.tar.gz
 # Source0-md5:	bac806ec9981c9d363e709b42d9b129e
-Source1:	http://rekudos.net/repo/parselog-cgi/%{name}-cgi.tgz
+Source1:	http://rekudos.net/repo/parselog-cgi/%{name}-cgi-%{cgi_version}.tar.gz
 # Source1-md5:	2942f30dd190dac31d7970ed04e0ffe5
 Source2:	%{name}-apache.conf
 Patch0:		%{name}-debug.patch
