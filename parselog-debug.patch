@@ -1,0 +1,10 @@
+--- parselog-0.09/cgi/conf/parselog-cgi.conf~	2006-02-19 20:08:52.000000000 +0200
++++ parselog-0.09/cgi/conf/parselog-cgi.conf	2006-02-19 20:10:10.000000000 +0200
+@@ -1,6 +1,6 @@
+ # /etc/webapps/parselog/parselog.conf. See parselog(1) for details.
+ 
+-debug   = 1
++debug   = 0
+ 
+ libdir  = /var/lib/parselog
+ 
