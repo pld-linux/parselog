@@ -1,29 +1,42 @@
+# TODO
+# - cgi outputs just 'XML::API::XHTML=HASH(0x834c240)' instead of real html
+#
 %define		cgi_version 0.04
+%define		main_version 0.09
 
 # Conditional build:
-%bcond_with	tests		# do not perform "make test"
+%bcond_without	tests		# do not perform "make test"
 #
 %include	/usr/lib/rpm/macros.perl
+%define		pdir parselog
+%define		pnam cgi
 Summary:	Parselog - a log file analysis tool
 Summary(pl):	Parselog - narzêdzie do analizy plików logów
 Name:		parselog
-Version:	0.09
-Release:	0.1
-Epoch:		0
+Version:	%{main_version}
+Release:	0.11
 License:	GPL v2
 Group:		Applications/System
 Source0:	http://rekudos.net/repo/parselog/%{name}.tgz
 # Source0-md5:	bac806ec9981c9d363e709b42d9b129e
 Source1:	http://rekudos.net/repo/parselog-cgi/%{name}-cgi.tgz
 # Source1-md5:	2942f30dd190dac31d7970ed04e0ffe5
+Source2:	%{name}-apache.conf
+Patch0:		%{name}-debug.patch
 URL:		http://rekudos.net/parselog/
 BuildRequires:	perl-DateTime
 BuildRequires:	perl-LockFile-Simple
 BuildRequires:	perl-devel >= 1:5.8.0
 BuildRequires:	rpm-perlprov >= 4.1-13
 BuildRequires:	rpmbuild(macros) >= 1.221
+%if %{with tests}
+BuildRequires:	perl-debug
+%endif
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+
+%define		_webapps	/etc/webapps
+%define		_webapp		%{name}
 
 %description
 Parselog can produce statistics for the following applications
@@ -70,9 +83,9 @@ przetwarzaj±cy ró¿ne pliki logów i tworz±cy bazy danych RRD.
 %package cgi
 Summary:	CGI script to generate graphs
 Summary(pl):	Skrypt CGI generuj±cy wykresy
-Group:		Applications/WWW
-Requires:	%{name} = %{version}-%{release}
 Version:	%{cgi_version}
+Group:		Applications/WWW
+Requires:	%{name} = %{main_version}-%{release}
 
 %description cgi
 This package contains a Perl CGI script to generate on-the-fly graphs
@@ -84,9 +97,12 @@ przeznaczone do ogl±dania przegl±dark± WWW.
 
 %prep
 %setup -q -a 1
-
 # for simplicity of build
 mv parselog-cgi-%{cgi_version} cgi
+%patch0 -p1
+
+cd cgi
+sed -i -e 's,/etc/parselog,%{_webapps}/%{_webapp},g' Makefile.PL bin/*.cgi conf/*.conf
 
 %build
 %{__perl} Makefile.PL \
@@ -115,26 +131,66 @@ cp -a example $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
 install conf/conf.d/* $RPM_BUILD_ROOT%{_sysconfdir}/parselog/conf.d
 
 cd cgi
+install -d $RPM_BUILD_ROOT%{_webapps}/%{_webapp}
 %{__make} install cgi \
 	DESTDIR=$RPM_BUILD_ROOT
 
+#mv $RPM_BUILD_ROOT{%{_sysconfdir}/parselog/{css,parselog-cgi.conf},%{_webapps}/%{_webapp}}
 rm -f $RPM_BUILD_ROOT%{_bindir}/%{name}.cgi # duplicate
-cp -p conf/apache.conf $RPM_BUILD_ROOT%{_sysconfdir}/parselog/apache.conf
+cp -p %{SOURCE2} $RPM_BUILD_ROOT%{_webapps}/%{_webapp}/httpd.conf
+cp -p %{SOURCE2} $RPM_BUILD_ROOT%{_webapps}/%{_webapp}/apache.conf
+
+rm -f $RPM_BUILD_ROOT%{perl_vendorarch}/auto/parselog/.packlist
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%triggerin cgi -- apache1 >= 1.3.33-2
-%apache_config_install -v 1 -c %{_sysconfdir}/parselog/apache.conf -n 09
+%triggerin -- apache1
+%webapp_register apache %{_webapp}
 
-%triggerun cgi -- apache1 >= 1.3.33-2
-%apache_config_uninstall -v 1 -n 09
+%triggerun -- apache1
+%webapp_unregister apache %{_webapp}
 
-%triggerin cgi -- apache >= 2.0.0
-%apache_config_install -v 2 -c %{_sysconfdir}/parselog/apache.conf -n 09
+%triggerin -- apache < 2.2.0, apache-base
+%webapp_register httpd %{_webapp}
 
-%triggerun cgi -- apache >= 2.0.0
-%apache_config_uninstall -v 2 -n 09
+%triggerun -- apache < 2.2.0, apache-base
+%webapp_unregister httpd %{_webapp}
+
+%triggerpostun -- %{name}-cgi < 0.04-0.2
+# rescue app configs.
+for i in style.css parselog-cgi.conf; do
+	if [ -f /etc/%{name}/$i.rpmsave ]; then
+		mv -f %{_webapps}/%{_webapp}/$i{,.rpmnew}
+		mv -f /etc/%{name}/$i.rpmsave %{_webapps}/%{_webapp}/$i
+	fi
+done
+
+# migrate from apache-config macros
+if [ -f /etc/%{name}/apache.conf.rpmsave ]; then
+	if [ -d /etc/apache/webapps.d ]; then
+		cp -f %{_webapps}/%{_webapp}/apache.conf{,.rpmnew}
+		cp -f /etc/%{name}/apache.conf.rpmsave %{_webapps}/%{_webapp}/apache.conf
+	fi
+
+	if [ -d /etc/httpd/webapps.d ]; then
+		cp -f %{_webapps}/%{_webapp}/httpd.conf{,.rpmnew}
+		cp -f /etc/%{name}/apache.conf.rpmsave %{_webapps}/%{_webapp}/httpd.conf
+	fi
+	rm -f /etc/%{name}/apache.conf.rpmsave
+fi
+
+# migrating from earlier apache-config?
+if [ -L /etc/apache/conf.d/09_%{name}.conf ]; then
+	rm -f /etc/apache/conf.d/09_%{name}.conf
+	/usr/sbin/webapp register apache %{_webapp}
+	%service -q apache reload
+fi
+if [ -L /etc/httpd/httpd.conf/09_%{name}.conf ]; then
+	rm -f /etc/httpd/httpd.conf/09_%{name}.conf
+	/usr/sbin/webapp register httpd %{_webapp}
+	%service -q httpd reload
+fi
 
 %files
 %defattr(644,root,root,755)
@@ -164,10 +220,12 @@ rm -rf $RPM_BUILD_ROOT
 %files cgi
 %defattr(644,root,root,755)
 %doc cgi/{Changes,README}
-%dir %{_sysconfdir}/parselog/css
-%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/parselog/css/*
-%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/parselog/apache.conf
-%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/parselog/parselog-cgi.conf
+%dir %attr(750,root,http) %{_webapps}/%{_webapp}
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_webapps}/%{_webapp}/apache.conf
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_webapps}/%{_webapp}/httpd.conf
+%attr(640,root,http) %config(noreplace) %verify(not md5 mtime size) %{_webapps}/%{_webapp}/parselog-cgi.conf
+%dir %{_webapps}/%{_webapp}/css
+%config(noreplace) %verify(not md5 mtime size) %{_webapps}/%{_webapp}/css/*
 %attr(755,root,root) /usr/lib/cgi-bin/parselog.cgi
 %{_mandir}/man1/parselog.cgi.1p*
 /var/cache/parselog-cgi
