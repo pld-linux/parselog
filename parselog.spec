@@ -32,6 +32,7 @@ BuildRequires:	rpmbuild(macros) >= 1.221
 %if %{with tests}
 BuildRequires:	perl-debug
 %endif
+Requires:	webapps
 Provides:	amavis-stats
 # For future, when amavis-stats will vanish:
 #Obsoletes:	amavis-stats
