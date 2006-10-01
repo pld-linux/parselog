@@ -33,9 +33,6 @@ BuildRequires:	rpmbuild(macros) >= 1.221
 BuildRequires:	perl-debug
 %endif
 Requires:	webapps
-Provides:	amavis-stats
-# For future, when amavis-stats will vanish:
-#Obsoletes:	amavis-stats
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -89,9 +86,6 @@ Summary:	CGI script to generate graphs
 Summary(pl):	Skrypt CGI generuj±cy wykresy
 Version:	%{cgi_version}
 Group:		Applications/WWW
-Provides:	amavis-stats-php
-# For future, when amavis-stats will vanish:
-#Obsoletes:	amavis-stats-php
 Requires:	%{name} = %{main_version}-%{release}
 
 %description cgi
