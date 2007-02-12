@@ -11,7 +11,7 @@
 %define		pdir parselog
 %define		pnam cgi
 Summary:	Parselog - a log file analysis tool
-Summary(pl):	Parselog - narzêdzie do analizy plików logów
+Summary(pl.UTF-8):   Parselog - narzÄ™dzie do analizy plikÃ³w logÃ³w
 Name:		parselog
 Version:	%{main_version}
 Release:	0.11
@@ -60,30 +60,30 @@ Reasons for not using parselog of other log tools:
 This package contains a set of Perl modules and a Perl script that
 will parse various log files and create Round Robin Databases (RRDs).
 
-%description -l pl
-Parselog mo¿e tworzyæ statystyki dla nastêpuj±cych aplikacji:
+%description -l pl.UTF-8
+Parselog moÅ¼e tworzyÄ‡ statystyki dla nastÄ™pujÄ…cych aplikacji:
 - AMaViS (i pochodne)
 - Exim
 - Postfix
 - Apache
-- MyDNS (wkrótce)
+- MyDNS (wkrÃ³tce)
 
-Powody, aby u¿ywaæ parseloga zamiast innych narzêdzi do logów:
-- prostota - jedno narzêdzie dla wielu aplikacji,
-- centralizacja - wy¶wietlanie razem wyników z wielu maszyn.
+Powody, aby uÅ¼ywaÄ‡ parseloga zamiast innych narzÄ™dzi do logÃ³w:
+- prostota - jedno narzÄ™dzie dla wielu aplikacji,
+- centralizacja - wyÅ›wietlanie razem wynikÃ³w z wielu maszyn.
 
-Powody, aby nie u¿ywaæ parseloga zamiast innych narzêdzi:
-- szybko¶æ - parselog jest napisany w Perlu; narzêdzie w C bêdzie
+Powody, aby nie uÅ¼ywaÄ‡ parseloga zamiast innych narzÄ™dzi:
+- szybkoÅ›Ä‡ - parselog jest napisany w Perlu; narzÄ™dzie w C bÄ™dzie
   szybsze,
-- kompletno¶æ - parselog mo¿e nie liczyæ w ten sam sposób, co inne
-  narzêdzie.
+- kompletnoÅ›Ä‡ - parselog moÅ¼e nie liczyÄ‡ w ten sam sposÃ³b, co inne
+  narzÄ™dzie.
 
-Ten pakiet zawiera zestaw modu³ów Perla i skrypt perlowy
-przetwarzaj±cy ró¿ne pliki logów i tworz±cy bazy danych RRD.
+Ten pakiet zawiera zestaw moduÅ‚Ã³w Perla i skrypt perlowy
+przetwarzajÄ…cy rÃ³Å¼ne pliki logÃ³w i tworzÄ…cy bazy danych RRD.
 
 %package cgi
 Summary:	CGI script to generate graphs
-Summary(pl):	Skrypt CGI generuj±cy wykresy
+Summary(pl.UTF-8):   Skrypt CGI generujÄ…cy wykresy
 Version:	%{cgi_version}
 Group:		Applications/WWW
 Requires:	%{name} = %{main_version}-%{release}
@@ -92,9 +92,9 @@ Requires:	%{name} = %{main_version}-%{release}
 This package contains a Perl CGI script to generate on-the-fly graphs
 to be viewed with a web browser.
 
-%description cgi -l pl
-Ten pakiet zawiera skrypt perlowy CGI generuj±cy w locie wykresy
-przeznaczone do ogl±dania przegl±dark± WWW.
+%description cgi -l pl.UTF-8
+Ten pakiet zawiera skrypt perlowy CGI generujÄ…cy w locie wykresy
+przeznaczone do oglÄ…dania przeglÄ…darkÄ… WWW.
 
 %prep
 %setup -q -a 1
