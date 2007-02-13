@@ -11,7 +11,7 @@
 %define		pdir parselog
 %define		pnam cgi
 Summary:	Parselog - a log file analysis tool
-Summary(pl.UTF-8):   Parselog - narzędzie do analizy plików logów
+Summary(pl.UTF-8):	Parselog - narzędzie do analizy plików logów
 Name:		parselog
 Version:	%{main_version}
 Release:	0.11
@@ -83,7 +83,7 @@ przetwarzający różne pliki logów i tworzący bazy danych RRD.
 
 %package cgi
 Summary:	CGI script to generate graphs
-Summary(pl.UTF-8):   Skrypt CGI generujący wykresy
+Summary(pl.UTF-8):	Skrypt CGI generujący wykresy
 Version:	%{cgi_version}
 Group:		Applications/WWW
 Requires:	%{name} = %{main_version}-%{release}
