@@ -1,12 +1,12 @@
 # TODO
 # - cgi outputs just 'XML::API::XHTML=HASH(0x834c240)' instead of real html
 #
+# Conditional build:
+%bcond_without	tests		# do not perform "make test"
+
 %define		cgi_version 0.04
 %define		main_version 0.09
 
-# Conditional build:
-%bcond_without	tests		# do not perform "make test"
-#
 %include	/usr/lib/rpm/macros.perl
 %define		pdir parselog
 %define		pnam cgi
