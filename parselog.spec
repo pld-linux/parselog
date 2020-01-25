@@ -7,7 +7,6 @@
 %define		cgi_version 0.04
 %define		main_version 0.09
 
-%include	/usr/lib/rpm/macros.perl
 %define		pdir parselog
 %define		pnam cgi
 Summary:	Parselog - a log file analysis tool
