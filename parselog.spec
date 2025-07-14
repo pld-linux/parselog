@@ -99,7 +99,7 @@ przeznaczone do oglądania przeglądarką WWW.
 %setup -q -a 1
 # for simplicity of build
 mv parselog-cgi-%{cgi_version} cgi
-%patch0 -p1
+%patch -P0 -p1
 
 cd cgi
 sed -i -e 's,/etc/parselog,%{_webapps}/%{_webapp},g' Makefile.PL bin/*.cgi conf/*.conf
